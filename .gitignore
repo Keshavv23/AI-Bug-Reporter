@@ -1,0 +1,25 @@
+# Environment variables — NEVER push these!
+.env
+
+# Database
+bugs.db
+
+# Generated reports
+bug_reports/
+json_reports/
+pdf_reports/
+
+# Uploaded screenshots
+static/uploads/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+desktop.ini

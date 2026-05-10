@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, sans-serif;
+
+    background:#0f172a;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+}
+
+.box{
+
+    width:100%;
+    max-width:420px;
+
+    background:#1e293b;
+
+    padding:40px;
+
+    border-radius:24px;
+
+    color:white;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+h1{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    color:#38bdf8;
+}
+
+input{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-bottom:18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#334155;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+input::placeholder{
+
+    color:#cbd5e1;
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+button:hover{
+
+    background:#1d4ed8;
+}
+.flash{
+
+    padding:14px;
+
+    border-radius:12px;
+
+    margin-bottom:18px;
+
+    text-align:center;
+
+    font-weight:bold;
+}
+
+.flash.success{
+
+    background:#14532d;
+
+    color:#bbf7d0;
+}
+
+.flash.error{
+
+    background:#7f1d1d;
+
+    color:#fecaca;
+}
+.error{
+
+    background:#7f1d1d;
+
+    color:#fecaca;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:16px;
+
+    text-align:center;
+}
+
+.link{
+
+    text-align:center;
+
+    margin-top:20px;
+
+    color:#cbd5e1;
+}
+
+.link a{
+
+    color:#38bdf8;
+
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>📝 Register</h1>
+
+    {% if error %}
+
+    <div class="error">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit">
+
+            Create Account
+
+        </button>
+
+    </form>
+
+    <div class="link">
+
+        Already have an account?
+
+        <a href="/login">
+
+            Login
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

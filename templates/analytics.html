@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Analytics Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        body{
+
+            font-family:Arial;
+
+            background:#0f172a;
+
+            color:white;
+
+            padding:40px;
+        }
+
+        h1{
+
+            margin-bottom:30px;
+
+            color:#38bdf8;
+        }
+
+        .top-card{
+
+            background:#1e293b;
+
+            padding:25px;
+
+            border-radius:18px;
+
+            margin-bottom:30px;
+
+            text-align:center;
+        }
+
+        .top-card h2{
+
+            font-size:50px;
+
+            margin-bottom:10px;
+        }
+
+        .charts{
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:25px;
+        }
+
+        .chart-box{
+
+            background:#1e293b;
+
+            padding:25px;
+
+            border-radius:18px;
+        }
+
+        canvas{
+
+            margin-top:20px;
+        }
+
+        .btn{
+
+            display:inline-block;
+
+            margin-top:30px;
+
+            padding:14px 22px;
+
+            background:#10b981;
+
+            color:white;
+
+            text-decoration:none;
+
+            border-radius:12px;
+
+            font-weight:bold;
+        }
+
+        @media(max-width:900px){
+
+            .charts{
+                grid-template-columns:1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>📊 Bug Analytics Dashboard</h1>
+
+    <div class="top-card">
+
+        <h2>{{ total_bugs }}</h2>
+
+        <p>Total Bugs Reported</p>
+
+    </div>
+
+    <div class="charts">
+
+        <!-- PIE CHART -->
+        <div class="chart-box">
+
+            <h2>Severity Distribution</h2>
+
+            <canvas id="severityChart"></canvas>
+
+        </div>
+
+        <!-- BAR CHART -->
+        <div class="chart-box">
+
+            <h2>Category Distribution</h2>
+
+            <canvas id="categoryChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <a class="btn" href="/">
+        ← Back To Generator
+    </a>
+
+    <script>
+
+        // SEVERITY PIE CHART
+        const severityCtx = document
+            .getElementById('severityChart');
+
+        new Chart(severityCtx, {
+
+            type: 'pie',
+
+            data: {
+
+                labels: {{ severity_labels | tojson }},
+
+                datasets: [{
+
+                    data: {{ severity_counts | tojson }},
+
+                    backgroundColor: [
+
+                        '#ef4444',
+                        '#f97316',
+                        '#eab308',
+                        '#22c55e'
+                    ]
+                }]
+            }
+        });
+
+        // CATEGORY BAR CHART
+        const categoryCtx = document
+            .getElementById('categoryChart');
+
+        new Chart(categoryCtx, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: {{ category_labels | tojson }},
+
+                datasets: [{
+
+                    label: 'Bug Count',
+
+                    data: {{ category_counts | tojson }},
+
+                    backgroundColor: '#38bdf8'
+                }]
+            },
+
+            options: {
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

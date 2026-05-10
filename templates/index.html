@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Bug Report Generator</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+
+            font-family:Arial, sans-serif;
+
+            background:linear-gradient(
+                135deg,
+                #020617,
+                #0f172a,
+                #1e293b
+            );
+
+            min-height:100vh;
+
+            padding:110px 30px 30px 30px;
+
+            color:white;
+        }
+
+        .topbar{
+
+            position:fixed;
+
+            top:0;
+
+            left:0;
+
+            width:100%;
+
+            height:80px;
+
+            background:#020617;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            padding:0 30px;
+
+            border-bottom:1px solid rgba(255,255,255,0.08);
+
+            z-index:999;
+        }
+
+        .logo{
+
+            color:#38bdf8;
+
+            font-size:28px;
+
+            font-weight:bold;
+        }
+
+        .user-section{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:18px;
+        }
+
+        .username{
+
+            color:#cbd5e1;
+
+            font-size:16px;
+        }
+
+        .logout-btn{
+
+            padding:10px 18px;
+
+            border:none;
+
+            border-radius:10px;
+
+            background:#ef4444;
+
+            color:white;
+
+            cursor:pointer;
+
+            font-weight:bold;
+        }
+
+        .logout-btn:hover{
+
+            background:#dc2626;
+        }
+
+        .container{
+
+            width:100%;
+
+            max-width:1100px;
+
+            margin:auto;
+
+            background:rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(18px);
+
+            border:1px solid rgba(255,255,255,0.1);
+
+            border-radius:30px;
+
+            padding:40px;
+
+            box-shadow:0 12px 40px rgba(0,0,0,0.5);
+        }
+
+        h1{
+
+            text-align:center;
+
+            margin-bottom:30px;
+
+            font-size:44px;
+
+            color:#38bdf8;
+        }
+
+        textarea{
+
+            width:100%;
+
+            height:180px;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:20px;
+
+            padding:22px;
+
+            font-size:16px;
+
+            resize:none;
+
+            background:rgba(255,255,255,0.12);
+
+            color:white;
+
+            line-height:1.8;
+        }
+
+        textarea::placeholder{
+            color:#cbd5e1;
+        }
+
+        .upload-box{
+
+            margin-top:22px;
+
+            background:rgba(255,255,255,0.06);
+
+            padding:22px;
+
+            border-radius:20px;
+
+            border:2px dashed rgba(255,255,255,0.18);
+        }
+
+        .upload-box label{
+
+            display:block;
+
+            margin-bottom:12px;
+
+            color:#67e8f9;
+
+            font-weight:bold;
+
+            font-size:18px;
+        }
+
+        input[type="file"]{
+
+            color:white;
+        }
+
+        .generate-btn{
+
+            width:100%;
+
+            margin-top:25px;
+
+            padding:18px;
+
+            border:none;
+
+            border-radius:18px;
+
+            font-size:18px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+
+            background:linear-gradient(
+                135deg,
+                #06b6d4,
+                #2563eb
+            );
+
+            color:white;
+        }
+
+        .report{
+
+            margin-top:40px;
+
+            background:rgba(255,255,255,0.08);
+
+            padding:34px;
+
+            border-radius:26px;
+        }
+
+        .report h2{
+
+            margin-bottom:28px;
+
+            color:#22d3ee;
+
+            font-size:34px;
+        }
+
+        .info-grid{
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:18px;
+
+            margin-bottom:25px;
+        }
+
+        .card{
+
+            background:rgba(255,255,255,0.08);
+
+            padding:20px;
+
+            border-radius:16px;
+
+            line-height:1.7;
+        }
+
+        .card b{
+
+            color:#38bdf8;
+        }
+
+        .severity{
+
+            display:inline-block;
+
+            padding:8px 16px;
+
+            border-radius:12px;
+
+            font-weight:bold;
+
+            margin-top:8px;
+        }
+
+        .Critical{
+            background:#dc2626;
+        }
+
+        .High{
+            background:#ea580c;
+        }
+
+        .Medium{
+            background:#eab308;
+            color:black;
+        }
+
+        .Low{
+            background:#16a34a;
+        }
+
+        .section{
+
+            margin-top:30px;
+        }
+
+        .section h3{
+
+            margin-bottom:16px;
+
+            color:#67e8f9;
+
+            font-size:24px;
+        }
+
+        .steps{
+
+            padding-left:22px;
+        }
+
+        .steps li{
+
+            margin-bottom:12px;
+
+            line-height:1.8;
+        }
+
+        .fix-box{
+
+            background:rgba(0,255,200,0.08);
+
+            border-left:4px solid #00ffcc;
+
+            padding:20px;
+
+            border-radius:14px;
+
+            white-space:pre-line;
+        }
+
+        .ocr-box{
+
+            background:rgba(59,130,246,0.12);
+
+            border-left:4px solid #3b82f6;
+
+            padding:20px;
+
+            border-radius:14px;
+
+            white-space:pre-line;
+        }
+
+        .ai-box{
+
+            background:rgba(168,85,247,0.12);
+
+            border-left:4px solid #a855f7;
+
+            padding:22px;
+
+            border-radius:14px;
+
+            white-space:pre-line;
+        }
+
+        .screenshot{
+
+            width:100%;
+
+            max-width:720px;
+
+            border-radius:22px;
+
+            margin-top:15px;
+        }
+
+        .button-group{
+
+            margin-top:35px;
+
+            display:flex;
+
+            flex-wrap:wrap;
+
+            gap:16px;
+        }
+
+        .btn{
+
+            flex:1;
+
+            min-width:190px;
+
+            padding:17px;
+
+            border:none;
+
+            border-radius:16px;
+
+            color:white;
+
+            font-size:17px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+        }
+
+        .download-btn{
+
+            background:#10b981;
+        }
+
+        .history-btn{
+
+            background:#f59e0b;
+        }
+
+        .analytics-btn{
+
+            background:#2563eb;
+        }
+
+        .new-btn{
+
+            background:#9333ea;
+        }
+
+        .github-btn{
+
+            background:#24292e;
+        }
+
+        a{
+            text-decoration:none;
+            flex:1;
+        }
+
+        @media(max-width:850px){
+
+            .info-grid{
+                grid-template-columns:1fr;
+            }
+
+            .button-group{
+                flex-direction:column;
+            }
+
+            .topbar{
+                flex-direction:column;
+                height:auto;
+                padding:15px;
+                gap:10px;
+            }
+
+            body{
+                padding-top:140px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="logo">
+        🤖 AI Bug Platform
+    </div>
+
+    <div class="user-section">
+
+        <span class="username">
+
+            👤 {{ current_user.username }}
+
+        </span>
+
+        <a href="/logout">
+
+            <button class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>🐛 AI Bug Report Generator</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <textarea
+            name="description"
+            placeholder="Describe the bug in detail..."
+            required></textarea>
+
+        <div class="upload-box">
+
+            <label>
+                🖼 Upload Screenshot For AI Analysis
+            </label>
+
+            <input
+                type="file"
+                name="screenshot"
+                accept="image/*"
+            >
+
+        </div>
+
+        <button class="generate-btn" type="submit">
+            🚀 Generate AI Report
+        </button>
+
+    </form>
+
+    {% if report %}
+
+    <div class="report">
+
+        <h2>{{ report.title }}</h2>
+
+        <div class="info-grid">
+
+            <div class="card">
+                <b>Bug ID</b><br>
+                {{ report.bug_id }}
+            </div>
+
+            <div class="card">
+                <b>Date</b><br>
+                {{ report.date }}
+            </div>
+
+            <div class="card">
+                <b>Category</b><br>
+                {{ report.category }}
+            </div>
+
+            <div class="card">
+                <b>Severity</b><br>
+
+                <span class="severity {{ report.severity }}">
+                    {{ report.severity }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h3>✅ Expected Result</h3>
+
+            <div class="card">
+                {{ report.expected }}
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h3>❌ Actual Result</h3>
+
+            <div class="card">
+                {{ report.actual }}
+            </div>
+
+        </div>
+
+        {% if report.screenshot %}
+
+        <div class="section">
+
+            <h3>🖼 Uploaded Screenshot</h3>
+
+            <img
+                class="screenshot"
+                src="{{ url_for('static', filename='uploads/' + report.screenshot) }}"
+            >
+
+        </div>
+
+        {% endif %}
+
+        {% if report.ocr_text %}
+
+        <div class="section">
+
+            <h3>🤖 OCR Screenshot Analysis</h3>
+
+            <div class="ocr-box">
+
+                {{ report.ocr_text }}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% if report.ai_analysis %}
+
+        <div class="section">
+
+            <h3>🧠 OpenAI Vision Analysis</h3>
+
+            <div class="ai-box">
+
+                {{ report.ai_analysis }}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+        
+        {% if report.test_cases %}
+
+<div class="section">
+
+    <h3>🧪 AI Generated Test Cases</h3>
+
+    <div class="ai-box">
+
+        {{ report.test_cases }}
+
+    </div>
+
+</div>
+
+{% endif %}
+
+        <div class="section">
+
+            <h3>🛠 AI Suggested Fix</h3>
+
+            <div class="fix-box">
+                {{ report.fix }}
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h3>📋 Steps To Reproduce</h3>
+
+            <ul class="steps">
+
+                {% for step in report.steps %}
+
+                    <li>{{ step }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        <div class="button-group">
+
+            <a href="/analytics">
+
+                <button class="btn analytics-btn">
+                    📊 Analytics
+                </button>
+
+            </a>
+
+            {% if report.github_url %}
+
+            <a href="{{ report.github_url }}" target="_blank">
+
+                <button class="btn github-btn">
+                    🐙 GitHub Issue
+                </button>
+
+            </a>
+
+            {% endif %}
+
+            <a href="/download/{{ report.pdf_file }}">
+
+                <button class="btn download-btn">
+                    ⬇ Download PDF
+                </button>
+
+            </a>
+
+            <a href="/history">
+
+                <button class="btn history-btn">
+                    📜 Bug History
+                </button>
+
+            </a>
+
+            <a href="/">
+
+                <button class="btn new-btn">
+                    ➕ New Report
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>
